@@ -1,6 +1,6 @@
 open Aoc2023
 let day = 1
-let test = true
+let test = false
 let input_file_name = 
     if test
         then "inputs/day" ^ (string_of_int day) ^ "test"
