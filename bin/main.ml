@@ -1,5 +1,5 @@
 open Aoc2023
-let day = 1
+let day = 2
 let test = false
 let input_file_name = 
     if test
@@ -25,8 +25,8 @@ let split_file_contents : string list =
 let solution =
   match day with
   | 1 -> (Day1.solve split_file_contents)
-(*
   | 2 -> (Day2.solve split_file_contents)
+  (*
   | 3 -> (Day3.solve split_file_contents)
   | 4 -> (Day4.solve split_file_contents)
   | 5 -> (Day5.solve split_file_contents)
