@@ -14,7 +14,7 @@ let parse_path : string list -> path * string list =
     |> Seq.cycle in
     p, lst
 
-let node_regex = Str.regexp {|\([A-Z]+\) = (\([A-Z]+\), \([A-Z]+\))|}
+let node_regex = Str.regexp {|\([0-9A-Z]+\) = (\([0-9A-Z]+\), \([0-9A-Z]+\))|}
 let parse_network_entry : string -> node_id * node =
   function s ->
     if not (Str.string_match node_regex s 0) then failwith "node_regex didn't match" else
@@ -31,8 +31,8 @@ let parse_puzzle : string list -> path * network =
     let path, lst = parse_path lst in
     path, parse_network lst
 
-let take_step : node_id -> direction -> network -> node_id =
-  fun id d n ->
+let take_step : direction -> network -> node_id -> node_id =
+  fun d n id ->
     match d, NodeMap.find id n with
     | L, (id', _) | R, (_, id') -> id'
 
@@ -43,7 +43,7 @@ let num_steps : path * network -> int =
         if id = "ZZZ" then i else
         match p () with
         | Cons (d, p) -> 
-          let next = take_step id d n in
+          let next = take_step d n id in
           helper next p (i + 1)
         | _ -> failwith "num_steps: path ran out"
     in
@@ -55,9 +55,29 @@ let solve_part1 : string list -> string =
     |> num_steps
     |> string_of_int
 
+let num_ghost_steps : path * network -> int =
+  function p, n ->
+    let rec helper : node_id list -> path -> int -> int =
+      fun ids p i ->
+        if List.for_all (String.ends_with ~suffix:"Z") ids then i else
+        match p () with
+        | Cons (d, p) -> 
+          let new_ids = List.map (take_step d n) ids in
+          helper new_ids p (i + 1)
+        | _ -> failwith "num_ghost_steps: path ran out"
+    in
+    let starting_ids = 
+      NodeMap.filter (fun id _ -> String.ends_with ~suffix:"A" id) n
+      |> NodeMap.bindings
+      |> List.map (function id, _ -> id)
+    in
+    helper starting_ids p 0
+
 let solve_part2 : string list -> string =
-  function _ ->
-    failwith "todo"
+  function lst ->
+    parse_puzzle lst
+    |> num_ghost_steps
+    |> string_of_int
 
 let solve : string list -> bool -> string =
   fun lst part1 ->
