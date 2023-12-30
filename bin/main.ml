@@ -1,7 +1,7 @@
 open Aoc2023
 let day = 8
 let test = false
-let part1 = true
+let part1 = false
 let input_file_name = 
     if test
         then "inputs/day" ^ (string_of_int day) ^ "test"

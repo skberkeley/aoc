@@ -4,3 +4,4 @@ Algorithmically, Part 1 was fairly straightfoward: Simulate the act of stepping 
 ## Part 2
 As a first try, I tried writing a brute force solution where multiple nodes are tracked. Rather predictably, this resulted in the program not terminating. After looking at some comments on the subreddit, it seems like a possible solution involves using cycles and LCMs. 
 As a second attempt, I'll try tracking whether each node tracked has reached a goal state, and assume (rather lazily) that each node will cycle back to a goal state after a fixed number of steps. As another lazy simplification, maybe the number of steps to reach any goal state from any start is the length of it's cycle. So all we need to do is find is the lcm of the number of steps each start takes to reach a goal node.
+It worked! lol

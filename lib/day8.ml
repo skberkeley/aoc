@@ -1,3 +1,5 @@
+open Util
+
 type node_id = string
 type node = node_id * node_id
 module NodeMap = Map.Make(String)
@@ -36,18 +38,22 @@ let take_step : direction -> network -> node_id -> node_id =
     match d, NodeMap.find id n with
     | L, (id', _) | R, (_, id') -> id'
 
-let num_steps : path * network -> int =
-  function p, n ->
+let num_steps_from_id : path -> network -> node_id -> int =
+  fun p n id ->
     let rec helper : node_id -> path -> int -> int =
       fun id p i ->
-        if id = "ZZZ" then i else
+        if String.ends_with ~suffix:"Z" id then i else
         match p () with
         | Cons (d, p) -> 
           let next = take_step d n id in
           helper next p (i + 1)
         | _ -> failwith "num_steps: path ran out"
     in
-    helper "AAA" p 0
+    helper id p 0
+
+let num_steps : path * network -> int =
+  function p, n ->
+    num_steps_from_id p n "AAA"
 
 let solve_part1 : string list -> string =
   function lst ->
@@ -55,23 +61,31 @@ let solve_part1 : string list -> string =
     |> num_steps
     |> string_of_int
 
+let rec gcd u v =
+  if v <> 0 then (gcd v (u mod v))
+  else (abs u)
+
+let lcm m n =
+  match m, n with
+  | 0, _ | _, 0 -> 0
+  | m, n -> abs (m * n) / (gcd m n)
+
+let lcm_of_list : int list -> int =
+  function 
+  | n :: lst ->
+    List.fold_left lcm n lst
+  | _ -> 1
+
 let num_ghost_steps : path * network -> int =
   function p, n ->
-    let rec helper : node_id list -> path -> int -> int =
-      fun ids p i ->
-        if List.for_all (String.ends_with ~suffix:"Z") ids then i else
-        match p () with
-        | Cons (d, p) -> 
-          let new_ids = List.map (take_step d n) ids in
-          helper new_ids p (i + 1)
-        | _ -> failwith "num_ghost_steps: path ran out"
-    in
     let starting_ids = 
       NodeMap.filter (fun id _ -> String.ends_with ~suffix:"A" id) n
       |> NodeMap.bindings
       |> List.map (function id, _ -> id)
     in
-    helper starting_ids p 0
+    let nums = starting_ids |> List.map (num_steps_from_id p n) in
+    print_endline (string_of_int_list nums);
+    lcm_of_list nums
 
 let solve_part2 : string list -> string =
   function lst ->
