@@ -1,6 +1,7 @@
 open Aoc2023
-let day = 7
+let day = 8
 let test = false
+let part1 = true
 let input_file_name = 
     if test
         then "inputs/day" ^ (string_of_int day) ^ "test"
@@ -31,8 +32,8 @@ let solution =
   | 5 -> (Day5.solve split_file_contents)
   | 6 -> (Day6.solve split_file_contents)
   | 7 -> (Day7.solve split_file_contents)
+  | 8 -> (Day8.solve split_file_contents part1)
   (*
-  | 8 -> (Day8.solve split_file_contents)
   | 9 -> (Day9.solve split_file_contents)
   | 10 -> (Day10.solve split_file_contents)
   | 11 -> (Day11.solve split_file_contents)
