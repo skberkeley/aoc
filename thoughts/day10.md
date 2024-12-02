@@ -1,0 +1,10 @@
+## First thoughts
+As graph problems go, this feels like a super simple one. All I have to do is start at the starting point, figure out which ways I can go, and then follow one way around the loop until I reach the starting point again to figure out how long the loop is. Dividing the length of the loop by 2 should give me how far the furthest point is.
+I don't even have to go through the trouble of converting the input into some graph represenation; I can just keep track of which direction I entered a cell from, and hardcode what each symbol means for where I can go from there. The only iffy part might be making too many recursive calls so I'll try to aim for more tail calls.
+## After part 1, on plane
+This approach worked on the test inputs. On the real input, it returned 6875.
+## Part 2, first thoughts
+This problem seemed a bit intimidating at first, but I think I've thought of a correct way to frame it. In each row, the loop defines a (possibly empty) set of intervals. In a given row, if a cell is contained within one of its intervals, then it is "inside" of the loop. So, to solve this problem, I need to compile a list of the intervals for each row, then calculate for each row, the number of cells which are inside the loop.
+## Part 2, second approach
+This first approach didn't work out since given just the row of a maze, it's not straight forward to determine which parts of it are contained in the loop and which aren't. For example, given a J followed by an F, there are situation where the cells in between could be contained in the loop, and where they might not be. Instead, the whole row has to be taken into consideration, with a nontrivial amount of logic to determine which parts of it are in the loop.
+As an alternative, I'll try a more graph based approach: Mark cells which are part of the interior as I'm going around the loop, then count all the cells which are reachable from them.
