@@ -1,2 +1,2 @@
-(lang dune 2.9)
-(name aoc2023)
+(lang dune 3.12)
+(name aoc)

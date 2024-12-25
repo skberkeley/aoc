@@ -1,0 +1,6 @@
+profile = ocamlformat
+version = 0.26.1
+extension-indent = 2
+function-indent = 2
+let-binding-indent = 2
+type-decl-indent = 2
