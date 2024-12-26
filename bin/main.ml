@@ -4,9 +4,9 @@ let year = 2024
 
 let day = 1
 
-let test = true
+let test = false
 
-let part1 = true
+let part1 = false
 
 let input_file_name =
   "inputs/" ^ string_of_int year
@@ -28,9 +28,13 @@ let read_file : string =
 let split_file_contents : string list = String.split_on_char '\n' read_file
 
 module type SOLN = sig
-  val solve_part_1 : string list -> string
+  type input_type
 
-  val solve_part_2 : string list -> string
+  val parse : string list -> input_type list
+
+  val solve_part_1 : input_type list -> string
+
+  val solve_part_2 : input_type list -> string
 end
 
 module type YEAR = sig
@@ -59,4 +63,4 @@ module DayModule = (val get_day_module day)
 
 let solution = if part1 then DayModule.solve_part_1 else DayModule.solve_part_2
 
-let () = print_endline (solution split_file_contents)
+let () = print_endline (solution (DayModule.parse split_file_contents))

@@ -1,3 +1,5 @@
+type input_type = int * int
+
 let parse : string list -> (int * int) list =
  fun lst ->
   let nums =
@@ -14,9 +16,8 @@ let parse : string list -> (int * int) list =
           raise (Invalid_argument "Unexpected number format") )
     nums
 
-let solve_part_1 : string list -> string =
+let solve_part_1 : input_type list -> string =
  fun lst ->
-  let lst = parse lst in
   let nums1, nums2 = List.split lst in
   let nums1 = List.sort ( - ) nums1 in
   let nums2 = List.sort ( - ) nums2 in
@@ -25,9 +26,8 @@ let solve_part_1 : string list -> string =
 
 module IntMap = Map.Make (Int)
 
-let solve_part_2 : string list -> string =
+let solve_part_2 : input_type list -> string =
  fun lst ->
-  let lst = parse lst in
   let nums1, nums2 = List.split lst in
   let counts = IntMap.empty in
   let counts =

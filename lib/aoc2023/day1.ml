@@ -77,6 +77,13 @@ let solve : string list -> string =
  fun lines ->
   List.map get_num_p2 lines |> List.fold_left ( + ) 0 |> string_of_int
 
-let solve_part_1 : string list -> string = fun lines -> solve lines
+type input_type = string * string
 
-let solve_part_2 : string list -> string = fun lines -> solve lines
+let parse : string list -> input_type list =
+ fun lst -> List.map (fun s -> (s, s)) lst
+
+let solve_part_1 : input_type list -> string =
+ fun lines -> match List.hd lines with a, _ -> a
+
+let solve_part_2 : input_type list -> string =
+ fun lines -> match List.hd lines with a, _ -> a
