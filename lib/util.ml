@@ -8,6 +8,12 @@ let string_of_int_array : int array -> string = function
       |> Array.to_list |> String.concat ", "
       |> fun s -> "[" ^ s ^ "]"
 
+let string_of_bool_option : bool option -> string = function
+  | None ->
+      "None"
+  | Some b ->
+      string_of_bool b
+
 let sum_list : int list -> int = function lst -> List.fold_left ( + ) 0 lst
 
 let sum_array : int array -> int = function arr -> Array.fold_left ( + ) 0 arr
@@ -36,3 +42,9 @@ let factorial ?(verbose = false) n =
   let f = helper 1 1 in
   if verbose then Printf.printf "factorial: %d! = %d\n" n f ;
   f
+
+let parse_int_list : string -> int list =
+ fun s ->
+  let re = Str.regexp {| +|} in
+  let nums = Str.split re s in
+  List.map int_of_string nums

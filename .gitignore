@@ -29,3 +29,5 @@ setup.log
 _opam/
 
 tmp
+
+prompts/

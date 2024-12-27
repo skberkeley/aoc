@@ -2,11 +2,11 @@ open Aoc
 
 let year = 2024
 
-let day = 1
+let day = 2
 
 let test = false
 
-let part1 = false
+let part1 = true
 
 let input_file_name =
   "inputs/" ^ string_of_int year
@@ -39,6 +39,8 @@ end
 
 module type YEAR = sig
   module Day1 : SOLN
+
+  module Day2 : SOLN
 end
 
 let get_year_module (year : int) =
@@ -56,6 +58,8 @@ let get_day_module (day : int) =
   match day with
   | 1 ->
       (module YearModule.Day1 : SOLN)
+  | 2 ->
+      (module YearModule.Day2 : SOLN)
   | _ ->
       raise (Invalid_argument "Invalid day")
 
