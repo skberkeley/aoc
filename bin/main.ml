@@ -30,11 +30,11 @@ let split_file_contents : string list = String.split_on_char '\n' read_file
 module type SOLN = sig
   type input_type
 
-  val parse : string list -> input_type list
+  val parse : string list -> input_type
 
-  val solve_part_1 : input_type list -> string
+  val solve_part_1 : input_type -> string
 
-  val solve_part_2 : input_type list -> string
+  val solve_part_2 : input_type -> string
 end
 
 module type YEAR = sig

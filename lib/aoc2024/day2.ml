@@ -1,6 +1,6 @@
-type input_type = int list
+type input_type = int list list
 
-let parse : string list -> input_type list =
+let parse : string list -> input_type =
  fun lst -> List.map Util.parse_int_list lst
 
 let rec is_safe ?(verbose = false) ?(is_asc = None) lst =
@@ -25,7 +25,7 @@ let rec is_safe ?(verbose = false) ?(is_asc = None) lst =
       else if Int.abs diff > 3 then false
       else is_safe ~verbose ~is_asc:(Some is_asc) (b :: lst')
 
-let solve_part_1 : input_type list -> string =
+let solve_part_1 : input_type -> string =
  fun lst -> List.filter is_safe lst |> List.length |> string_of_int
 
-let solve_part_2 : input_type list -> string = fun _ -> failwith "todo"
+let solve_part_2 : input_type -> string = fun _ -> failwith "todo"

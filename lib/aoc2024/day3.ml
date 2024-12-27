@@ -1,8 +1,8 @@
-type input_type = int * int
+type input_type = (int * int) list
 
 let mul_re = Str.regexp {|mul(\([0-9][0-9]?[0-9]?\),\([0-9][0-9]?[0-9]?\))|}
 
-let rec find_muls : string -> input_type list =
+let rec find_muls : string -> input_type =
  fun s ->
   try
     let _ = Str.search_forward mul_re s 0 in
@@ -13,10 +13,10 @@ let rec find_muls : string -> input_type list =
     (num1, num2) :: find_muls s'
   with Not_found -> []
 
-let parse : string list -> input_type list =
+let parse : string list -> input_type =
  fun lst -> List.map find_muls lst |> List.flatten
 
-let solve_part_1 : input_type list -> string =
+let solve_part_1 : input_type -> string =
  fun lst ->
   List.map (fun (n1, n2) -> n1 * n2) lst
   |> List.fold_left ( + ) 0 |> string_of_int
