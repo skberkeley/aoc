@@ -21,4 +21,4 @@ let solve_part_1 : input_type -> string =
   List.map (fun (n1, n2) -> n1 * n2) lst
   |> List.fold_left ( + ) 0 |> string_of_int
 
-let solve_part_2 : input_type list -> string = fun _ -> failwith "todo"
+let solve_part_2 : input_type -> string = fun _ -> failwith "todo"

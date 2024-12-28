@@ -2,7 +2,7 @@ open Aoc
 
 let year = 2024
 
-let day = 3
+let day = 4
 
 let test = false
 
@@ -43,6 +43,8 @@ module type YEAR = sig
   module Day2 : SOLN
 
   module Day3 : SOLN
+
+  module Day4 : SOLN
 end
 
 let get_year_module (year : int) =
@@ -64,6 +66,8 @@ let get_day_module (day : int) =
       (module YearModule.Day2 : SOLN)
   | 3 ->
       (module YearModule.Day3 : SOLN)
+  | 4 ->
+      (module YearModule.Day4 : SOLN)
   | _ ->
       raise (Invalid_argument "Invalid day")
 
