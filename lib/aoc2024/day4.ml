@@ -81,4 +81,20 @@ let solve_part_1 : input_type -> string =
   done ;
   !count |> string_of_int
 
-let solve_part_2 : input_type -> string = fun _ -> failwith "todo"
+let solve_part_2 : input_type -> string =
+ fun arr ->
+  let count = ref 0 in
+  let length = Array.length arr in
+  let width = Array.length arr.(0) in
+  for i = 1 to length - 2 do
+    for j = 1 to width - 2 do
+      if arr.(i).(j) = 'A' then
+        let diag_1 = [arr.(i - 1).(j - 1); arr.(i + 1).(j + 1)] in
+        let diag_2 = [arr.(i + 1).(j - 1); arr.(i - 1).(j + 1)] in
+        if
+          (diag_1 = ['M'; 'S'] || diag_1 = ['S'; 'M'])
+          && (diag_2 = ['M'; 'S'] || diag_2 = ['S'; 'M'])
+        then count := !count + 1
+    done
+  done ;
+  !count |> string_of_int
