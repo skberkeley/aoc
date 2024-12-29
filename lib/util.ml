@@ -1,6 +1,6 @@
 let string_of_int_list : int list -> string = function
   | lst ->
-      List.map string_of_int lst |> String.concat ", " |> fun s -> "[" ^ s ^ "]"
+      List.map string_of_int lst |> String.concat "; " |> fun s -> "[" ^ s ^ "]"
 
 let string_of_int_array : int array -> string = function
   | arr ->
@@ -13,6 +13,12 @@ let string_of_bool_option : bool option -> string = function
       "None"
   | Some b ->
       string_of_bool b
+
+let string_of_int_list_option : int list option -> string = function
+  | None ->
+      "None"
+  | Some l ->
+      string_of_int_list l
 
 let sum_list : int list -> int = function lst -> List.fold_left ( + ) 0 lst
 
