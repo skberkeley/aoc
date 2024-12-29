@@ -65,4 +65,20 @@ let solve_part_1 : input_type -> string = function
       let ok_updates = List.filter (update_ok rule_map) updates in
       List.map get_middle ok_updates |> List.fold_left ( + ) 0 |> string_of_int
 
-let solve_part_2 : input_type -> string = fun _ -> failwith "todo"
+let fix_update (rule_map : IntSet.t IntMap.t) (update : int list) =
+  List.stable_sort
+    (fun a b ->
+      if IntMap.mem b rule_map && IntSet.mem a (IntMap.find b rule_map) then 1
+      else if IntMap.mem a rule_map && IntSet.mem b (IntMap.find a rule_map)
+      then -1
+      else 0 )
+    update
+
+let solve_part_2 : input_type -> string = function
+  | rules, updates ->
+      let rule_map = map_of_rules rules in
+      let bad_updates =
+        List.filter (fun u -> not (update_ok rule_map u)) updates
+      in
+      let fixed_updates = List.map (fix_update rule_map) bad_updates in
+      List.map get_middle fixed_updates |> Util.sum_list |> string_of_int
