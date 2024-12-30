@@ -7,9 +7,9 @@ let day = 6
 (* let test = true *)
 let test = false
 
-let part1 = true
+(* let part1 = true *)
 
-(* let part1 = false *)
+let part1 = false
 
 let input_file_name =
   "inputs/" ^ string_of_int year
