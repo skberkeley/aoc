@@ -54,3 +54,14 @@ let parse_int_list : string -> int list =
   let re = Str.regexp {| +|} in
   let nums = Str.split re s in
   List.map int_of_string nums
+
+open Core
+
+module IntPair = struct
+  module T = struct
+    type t = int * int [@@deriving sexp, compare, hash]
+  end
+
+  include T
+  include Core.Comparable.Make (T)
+end

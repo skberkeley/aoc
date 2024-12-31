@@ -102,3 +102,14 @@ let solve_part2 : string list -> string = function
 
 let solve : string list -> bool -> string =
  fun lst part1 -> if part1 then solve_part1 lst else solve_part2 lst
+
+type input_type = (string * string) list
+
+let parse : string list -> input_type =
+ fun lst -> List.map (fun s -> (s, s)) lst
+
+let solve_part_1 : input_type -> string =
+ fun lines -> match List.hd lines with a, _ -> a
+
+let solve_part_2 : input_type -> string =
+ fun lines -> match List.hd lines with a, _ -> a
