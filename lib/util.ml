@@ -55,6 +55,8 @@ let parse_int_list : string -> int list =
   let nums = Str.split re s in
   List.map int_of_string nums
 
+let rec gcd a b = if b = 0 then a else gcd b (a mod b)
+
 open Core
 
 module IntPair = struct

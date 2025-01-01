@@ -58,4 +58,40 @@ let solve_part_1 (i : input_type) =
      ~f:(fun (x, y) -> Printf.printf "(%d, %d)\n" x y) ; *)
   Hash_set.length antinodes |> string_of_int
 
-let solve_part_2 (_ : input_type) = failwith "todo"
+let compute_antinodes (length : int) (width : int) (antennas : pair list) =
+  let is_in_bounds (x : int) (y : int) =
+    x >= 0 && x < length && y >= 0 && y < width
+  in
+  let antinodes = PairSet.create () in
+  let arr = Array.of_list antennas in
+  let num_antennas = Array.length arr in
+  for i = 0 to num_antennas - 2 do
+    for j = i + 1 to num_antennas - 1 do
+      let (x1, y1), (x2, y2) = (arr.(i), arr.(j)) in
+      let dx, dy = (x2 - x1, y2 - y1) in
+      (* compute step *)
+      let gcd = Util.gcd dx dy in
+      let step_x, step_y = (dx / gcd, dy / gcd) in
+      let curr_x, curr_y = (ref x1, ref y1) in
+      while is_in_bounds !curr_x !curr_y do
+        Hash_set.add antinodes (!curr_x, !curr_y) ;
+        curr_x := !curr_x + step_x ;
+        curr_y := !curr_y + step_y
+      done ;
+      let curr_x, curr_y = (ref x1, ref y1) in
+      while is_in_bounds !curr_x !curr_y do
+        Hash_set.add antinodes (!curr_x, !curr_y) ;
+        curr_x := !curr_x - step_x ;
+        curr_y := !curr_y - step_y
+      done
+    done
+  done ;
+  antinodes
+
+let solve_part_2 (i : input_type) =
+  let antinodes =
+    Hashtbl.fold i.antennas ~init:(PairSet.create ())
+      ~f:(fun ~key:_ ~data:antennas antinodes ->
+        Hash_set.union antinodes (compute_antinodes i.length i.width antennas) )
+  in
+  Hash_set.length antinodes |> string_of_int
