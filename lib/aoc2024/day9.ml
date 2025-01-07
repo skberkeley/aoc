@@ -77,4 +77,72 @@ let solve_part_1 (i : input_type) =
   helper ~verbose:false i.disk_map true 0 ;
   !checksum |> string_of_int
 
-let solve_part_2 (_ : input_type) = failwith "todo"
+type free_space = {index: int; size: int}
+
+let string_of_free_space = function
+  | {index; size} ->
+      Printf.sprintf "{index= %d; size = %d}" index size
+
+let rec free_spaces_of_diskmap ?(curr_index = 0) (disk_map : int list) =
+  match disk_map with
+  | [] | [_] ->
+      []
+  | a :: b :: disk_map ->
+      {index= curr_index + a; size= b}
+      :: free_spaces_of_diskmap ~curr_index:(curr_index + a + b) disk_map
+
+type file_2 = {id: int; size: int; index: int}
+
+let file_2s_of_diskmap (disk_map : int list) =
+  let l = ref [] in
+  let rec helper (curr_index : int) (num_files : int) (disk_map : int list) =
+    match disk_map with
+    | [] ->
+        ()
+    | [a] ->
+        l := {id= num_files; size= a; index= curr_index} :: !l
+    | a :: b :: disk_map ->
+        l := {id= num_files; size= a; index= curr_index} :: !l ;
+        helper (curr_index + a + b) (num_files + 1) disk_map
+  in
+  helper 0 0 disk_map ; !l
+
+let rec find_free_space ?(verbose = false) (free_spaces : free_space list)
+    (size : int) (file_index : int) =
+  (* returns index of free space to use, and resulting free space list *)
+  (* the returned index is -1 if no free spaces are large enough *)
+  if verbose then
+    Printf.printf "free_spaces: %s, size: %d\n"
+      (Util.string_of_list free_spaces string_of_free_space)
+      size ;
+  match free_spaces with
+  | [] ->
+      (-1, [])
+  | {index; _} :: free_spaces when index > file_index ->
+      (-1, free_spaces)
+  | {index; size= fs_size} :: free_spaces when size = fs_size ->
+      (index, free_spaces)
+  | {index; size= fs_size} :: free_spaces when size < fs_size ->
+      (index, {index= index + size; size= fs_size - size} :: free_spaces)
+  | fs :: free_spaces ->
+      (* size > fs_size *)
+      let i, free_spaces = find_free_space free_spaces size file_index in
+      (i, fs :: free_spaces)
+
+let verbose = false
+
+let solve_part_2 (i : input_type) =
+  (* maintain a list of each free space's size and index, in their original order *)
+  let free_spaces = ref (free_spaces_of_diskmap i.disk_map) in
+  let files = file_2s_of_diskmap i.disk_map in
+  (* for each file, from right to left, figure out which free space it would go in, *)
+  (* compute the resulting checksum contribution, and update the free space list *)
+  let checksum = ref 0 in
+  List.iter files ~f:(fun f ->
+      let i, fs = find_free_space ~verbose !free_spaces f.size f.index in
+      free_spaces := fs ;
+      let i = if i >= 0 then i else f.index in
+      if verbose then
+        Printf.printf "{id = %d; size = %d; index = %d}\n" f.id f.size i ;
+      checksum := !checksum + (f.id * partial_sum i f.size) ) ;
+  !checksum |> string_of_int

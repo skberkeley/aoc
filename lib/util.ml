@@ -1,6 +1,9 @@
+let string_of_list : 'a list -> ('a -> string) -> string =
+ fun l f -> List.map f l |> String.concat "; " |> fun s -> "[" ^ s ^ "]"
+
 let string_of_int_list : int list -> string = function
   | lst ->
-      List.map string_of_int lst |> String.concat "; " |> fun s -> "[" ^ s ^ "]"
+      string_of_list lst string_of_int
 
 let string_of_int_array : int array -> string = function
   | arr ->
