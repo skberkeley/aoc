@@ -70,3 +70,7 @@ module IntPair = struct
   include T
   include Core.Comparable.Make (T)
 end
+
+let parse_matrix (l : string list) (char_parser : char -> 'a) =
+  List.map l ~f:(fun s -> String.to_array s |> Array.map ~f:char_parser)
+  |> Array.of_list
