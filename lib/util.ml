@@ -71,6 +71,8 @@ module IntPair = struct
   include Core.Comparable.Make (T)
 end
 
+module PairSet = Hash_set.Make (IntPair)
+
 let parse_matrix (l : string list) (char_parser : char -> 'a) =
   List.map l ~f:(fun s -> String.to_array s |> Array.map ~f:char_parser)
   |> Array.of_list
