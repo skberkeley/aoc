@@ -2,14 +2,15 @@ open Aoc
 
 let year = 2024
 
-let day = 12
+let day = 13
 
 (* let test = true *)
+
 let test = false
 
-let part1 = true
+(* let part1 = true *)
 
-(* let part1 = false *)
+let part1 = false
 
 let input_file_name =
   "inputs/" ^ string_of_int year
@@ -64,6 +65,8 @@ module type YEAR = sig
   module Day11 : SOLN
 
   module Day12 : SOLN
+
+  module Day13 : SOLN
 end
 
 let get_year_module (year : int) =
@@ -103,6 +106,8 @@ let get_day_module (day : int) =
       (module YearModule.Day11 : SOLN)
   | 12 ->
       (module YearModule.Day12 : SOLN)
+  | 13 ->
+      (module YearModule.Day13 : SOLN)
   | _ ->
       raise (Invalid_argument "Invalid day")
 
